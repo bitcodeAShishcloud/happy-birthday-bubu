@@ -1024,6 +1024,20 @@ body {
   align-items: center;
   justify-content: center;
   transition: filter var(--duration-normal) var(--ease-standard);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.photo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--radius-base);
+  transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.photo-item:hover .photo-image {
+  transform: scale(1.05);
 }
 
 .photo-placeholder::before {
@@ -1036,6 +1050,7 @@ body {
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-base);
   pointer-events: none;
+  z-index: 2;
 }
 
 .photo-placeholder::after {
@@ -1045,6 +1060,13 @@ body {
   z-index: 1;
   color: white;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  position: absolute;
+  display: none; /* Hide when image is present */
+}
+
+/* Show placeholder icon only when image fails to load */
+.photo-placeholder:not(:has(.photo-image))::after {
+  display: block;
 }
 
 .photo-frame {
@@ -1056,6 +1078,7 @@ body {
   border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: var(--radius-base);
   pointer-events: none;
+  z-index: 3;
 }
 
 .photo-item:hover .photo-placeholder {

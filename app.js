@@ -119,6 +119,23 @@ function setupPhotoGallery() {
     const photoItems = document.querySelectorAll('.photo-item');
     
     photoItems.forEach((item, index) => {
+        // Handle image loading
+        const img = item.querySelector('.photo-image');
+        if (img) {
+            img.addEventListener('load', function() {
+                // Image loaded successfully
+                this.style.opacity = '1';
+            });
+            
+            img.addEventListener('error', function() {
+                // Image failed to load, show placeholder
+                this.style.display = 'none';
+                const placeholder = this.parentElement;
+                placeholder.style.background = getRandomGradient(index);
+                placeholder.querySelector('::after')?.style.setProperty('display', 'block');
+            });
+        }
+        
         // Add click interaction for photos
         item.addEventListener('click', function() {
             // Create click ripple effect
@@ -166,6 +183,23 @@ function setupPhotoGallery() {
         item.style.transition = 'all 0.6s ease-out';
         observer.observe(item);
     });
+}
+
+// Helper function to get random gradient for fallback
+function getRandomGradient(index) {
+    const gradients = [
+        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+        'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+        'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+        'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+        'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+        'linear-gradient(135deg, #ff8a80 0%, #ea80fc 100%)'
+    ];
+    return gradients[index % gradients.length];
 }
 
 // Create sparkle effect for photos
